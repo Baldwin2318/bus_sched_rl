@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>STM Real-Time Map</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
+    integrity="sha256-sA+U5ZhZgEBqRoVcT4cC9Z1N/kLS8EI6Y5ZXDR0gWIk="
+    crossorigin=""
+  />
+  <style>
+    #map { height: 100vh; }
+  </style>
+</head>
+<body>
+  <div id="map"></div>
+
+  <script
+    src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
+    integrity="sha256-o9N1j6kNfUksCtfh1Ck3DWvJ0/gMw3I2dJF7VglrQt4="
+    crossorigin=""
+  ></script>
+  <script>
+    const map = L.map('map').setView([45.504, -73.574], 12);  // Montreal center
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 18,
+    }).addTo(map);
+
+    // fetch your JSON and plot vehicles
+    fetch('/data')
+      .then(res => res.json())
+      .then(feed => {
+        const vehicles = feed.entity
+          .filter(e => e.vehicle)
+          .map(e => e.vehicle.vehicle);
+
+        vehicles.forEach(v => {
+          const { latitude, longitude } = v.position;
+          L.marker([latitude, longitude])
+            .bindPopup(`Bus ${v.id}`)
+            .addTo(map);
+        });
+      })
+      .catch(err => console.error(err));
+  </script>
+</body>
+</html>
