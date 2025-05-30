@@ -195,3 +195,6 @@ cython_debug/
 
 # Local secrets and config
 critical_data.py
+
+# macOS folder metadata
+**/.DS_Store
