@@ -9,13 +9,25 @@ from html_static import html_val
 
 from flask import Flask, jsonify, Response, request
 
-# --- GTFS static loader for route shapes ---
+# --- GTFS static loader for route shapes (download and extract GTFS) ---
 import os
 import csv
+import io
+import zipfile
 
-# Paths to GTFS static files
-trips_csv_path = os.path.join(os.path.dirname(__file__), 'static', 'gtfs', 'trips.txt')
-shapes_csv_path = os.path.join(os.path.dirname(__file__), 'static', 'gtfs', 'shapes.txt')
+GTFS_ZIP_URL = "http://www.stm.info/sites/default/files/gtfs/gtfs_stm.zip"
+
+def download_and_extract_gtfs():
+    resp = requests.get(GTFS_ZIP_URL, stream=True)
+    resp.raise_for_status()
+    z = zipfile.ZipFile(io.BytesIO(resp.content))
+    gtfs_folder = os.path.join(os.path.dirname(__file__), 'gtfs_temp')
+    if not os.path.exists(gtfs_folder):
+        os.makedirs(gtfs_folder)
+    z.extractall(gtfs_folder)
+    return os.path.join(gtfs_folder, 'trips.txt'), os.path.join(gtfs_folder, 'shapes.txt')
+
+trips_csv_path, shapes_csv_path = download_and_extract_gtfs()
 
 # Map to one or more shape_ids via trips.txt
 route_to_shape_ids = {}
