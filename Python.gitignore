@@ -197,4 +197,4 @@ cython_debug/
 critical_data.py
 
 # macOS folder metadata
-**/.DS_Store
+.DS_Store
