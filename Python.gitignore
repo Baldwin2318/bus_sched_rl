@@ -198,3 +198,4 @@ critical_data.py
 
 # macOS folder metadata
 .DS_Store
+static/.DS_Store
