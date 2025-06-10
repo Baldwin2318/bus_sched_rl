@@ -35,7 +35,7 @@ html_val = f'''
         // Add a distinct marker for user location
         const userIcon = L.icon({{
           iconUrl: '/static/user-marker.png',
-          iconSize: [50, 50],
+          iconSize: [30, 30],
           iconAnchor: [12, 41]
         }});
         L.marker(userLatLng, {{icon: userIcon}}).addTo(map)
@@ -57,7 +57,7 @@ html_val = f'''
         const [lon, lat] = f.geometry.coordinates;
         const heading = f.properties.heading;
         if (!markers[id]) {{
-            const icon = L.icon({{ iconUrl: '/static/bus.png', iconSize: [60,40] }});
+            const icon = L.icon({{ iconUrl: '/static/bus.png', iconSize: [30,30] }});
             markers[id] = L.marker([lat, lon], {{icon, rotationAngle: heading}}).addTo(map)
               .bindPopup(`$ {{f.properties.route}} ${{compassLabel(f.properties.heading)}}`)
               .on('click', function() {{
@@ -77,7 +77,7 @@ html_val = f'''
                             map.removeLayer(routeLayer);
                           }}
                           if (numCoords > 0) {{
-                            routeLayer = L.geoJSON(data, {{ style: {{ color: '#00ff00', weight: 3 }} }}).addTo(map);
+                            routeLayer = L.geoJSON(data, {{ style: {{ color: '#0000ff', weight: 3 }} }}).addTo(map);
                             map.fitBounds(routeLayer.getBounds(), {{ padding: [20, 20] }});
                             console.log(`Drew route layer for ${{routeId}}`);
                           }} else {{
