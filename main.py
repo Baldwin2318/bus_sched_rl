@@ -6,6 +6,7 @@ import json
 import csv
 import folium
 from html_static import html_val
+import os
 
 from flask import Flask, jsonify, Response, request
 
@@ -198,4 +199,6 @@ def index():
     return Response(html_val, mimetype='text/html')
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5000)
+    # app.run(debug=False, port=5000)
+    port = int(os.environ.get("PORT", 10000))
+    app.run(host='0.0.0.0', port=port, debug=False)
